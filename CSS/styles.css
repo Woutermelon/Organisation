@@ -1,0 +1,13 @@
+body {
+    width: auto;
+    height: auto;
+    background-color: white;
+}
+
+.box-container {
+    width: 90%;
+    background-color: red;
+    height: 500px;
+    margin: auto;
+    border-radius: 5px;
+}
