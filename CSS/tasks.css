@@ -8,13 +8,20 @@
 }
 
 body{
-    background-color: #78909c;
+    background-color: #1e293b;
     padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 body h2 {
     margin: 20px 0 8px 30px;
-    color: #212121;
+    color: #fff;
+    width: 80%;
+}
+
+.right {
+    margin-top: 20px;
 }
 
 .container {
@@ -33,27 +40,26 @@ body h2 {
     justify-content: space-between;
     list-style: none;
     margin-bottom: 10px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    width: 40%;
 }
 
 .box-header span {
-    margin-left: 5px;
     background-color: #fff;
     padding: 3px 6px;
     border-radius: 3px;
     color: #1976d2;
+    border: solid 1px #1e293b;
 }
 
-.box-header i {
-    margin-right: 5px;
-    color: #fff;
-    cursor: pointer;
-}
 
 .box{
     background-color: #fff;
     padding: 7px 20px;
     border-radius: 8px;
-    height: 142px;
+    height: 150px;
     cursor: pointer;
     margin: 15px 15px;
     transition: all 0.2s;
@@ -80,16 +86,24 @@ body h2 {
     border-radius: 4px;
 }
 
-#red{
+#Engineering{
     background-color: red;
 }
 
-#yellow {
-    background-color: rgb(178, 178, 23);
+#Economics {
+    background-color: gold;
 }
 
-#green {
+#Personal {
     background-color: green;
+}
+
+#Work {
+    background-color: purple;
+}
+
+#College {
+    background-color: blue;
 }
 
 .box-footer{
