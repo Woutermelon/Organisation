@@ -72,80 +72,48 @@ testTasks.forEach((testTask) => {
 
 //showTask function
 function showTasks() {
-    let completeTasksHTML = '';
-    let backlogHTML = '';
-    let inProgressHTML = '';
+    let newTaskHTML = ``;
+    let completeTasksHTML = ``;
+    let backlogTasksHTML = ``;
+    let inProgressTasksHTML = ``;
     numComplete = 0;
     numInProgress = 0;
     numBacklog = 0;
     if (taskList) {
         taskList.forEach((task, id) => {
-            if (task.taskStatus === "Complete") {
+            newTaskHTML = `
+                <div class="box">
+                    <div class="top-box">    
+                        <span class="tag" id="${task.taskType}">${task.taskType}</span>
+                        <i class="fa-solid fa-xmark" onclick="deleteTask(${id})"></i>
+                    </div>
+                    <p>${task.taskName}</p>
+                    <div class="box-footer">
+                        <div class="date">
+                            <li><i class="fa-solid fa-calendar-days"></i></li>
+                            <span>01/01/2001</span>
+                        </div>
+                        
+                        <li class="comments"><i class="fa-solid fa-message"></i></li>
+                    </div>
+                </div>
+            `;
+            if (task.taskStatus === 'Complete') {
+                completeTasksHTML += newTaskHTML;
                 numComplete += 1;
-                completeTasksHTML += `
-                    <div class="box">
-                        <div class="top-box">    
-                            <span class="tag" id="${task.taskType}">${task.taskType}</span>
-                            <i class="fa-solid fa-xmark" onclick="deleteTask(${id})"></i>
-                        </div>
-                        <p>${task.taskName}</p>
-                        <div class="box-footer">
-                            <div class="date">
-                                <li><i class="fa-solid fa-calendar-days"></i></li>
-                                <span>01/01/2001</span>
-                            </div>
-                            
-                            <li class="comments"><i class="fa-solid fa-message"></i></li>
-                        </div>
-                    </div>
-                `;
-            } else if (task.taskStatus === "In Progress") {
+            } else if (task.taskStatus === 'In Progress') {
+                inProgressTasksHTML += newTaskHTML;
                 numInProgress += 1;
-                inProgressHTML += `
-                    <div class="box">
-                        <div class="top-box">    
-                            <span class="tag" id="${task.taskType}">${task.taskType}</span>
-                            <i class="fa-solid fa-xmark" onclick="deleteTask(${id})"></i>
-                        </div>
-                        <p>${task.taskName}</p>
-                        <div class="box-footer">
-                            <div class="date">
-                                <li><i class="fa-solid fa-calendar-days"></i></li>
-                                <span>01/01/2001</span>
-                            </div>
-                            
-                            <li class="comments"><i class="fa-solid fa-message"></i></li>
-                        </div>
-                        <button id="taskCompleteBtn" onclick="completeTask(${id})">Complete</button>
-                    </div>
-                `;
-            } else {
+            } else if (task.taskStatus === 'Backlog') {
+                backlogTasksHTML += newTaskHTML;
                 numBacklog += 1;
-                backlogHTML += `
-                    <div class="box">
-                        <div class="top-box">    
-                            <span class="tag" id="${task.taskType}">${task.taskType}</span>
-                            <i class="fa-solid fa-xmark" onclick="deleteTask(${id})"></i>
-                        </div>
-                        <p>${task.taskName}</p>
-                        <div class="box-footer">
-                            <div class="date">
-                                <li><i class="fa-solid fa-calendar-days"></i></li>
-                                <span>01/01/2001</span>
-                            </div>
-                            
-                            <li class="comments"><i class="fa-solid fa-message"></i></li>
-                        </div>
-                        <button class="beginTaskBtn" onclick="beginTask(${id})">Begin</button>
-                    </div>
-                `;
             }
         });
     }
 
     document.querySelector('.complete-tasks-column').innerHTML = completeTasksHTML;
-    document.querySelector('.backlog-tasks-column').innerHTML = backlogHTML;
-    document.querySelector('.in-progress-tasks-column').innerHTML = inProgressHTML;
+    document.querySelector('.backlog-tasks-column').innerHTML = backlogTasksHTML;
+    document.querySelector('.in-progress-tasks-column').innerHTML = inProgressTasksHTML;
 
     document.querySelector('.numBacklog').textContent = JSON.stringify(numBacklog);
     document.querySelector('.numInProgress').textContent = JSON.stringify(numInProgress);
