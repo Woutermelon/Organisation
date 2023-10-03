@@ -3,62 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Organiser</title>
+    <title>Super Tasker</title>
     <link rel="stylesheet" href="CSS/tasks.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://kit.fontawesome.com/0130dfdac4.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <h2 class="title">Task Organiser</h2>
-    <span class="right"><i class="fa-solid fa-plus"></i></span>
-    <div class="container">
-        <div>
-            <div class="box-header">
-                <h5>BackLog<span class="num"> 0 </span></h5>
-                
-            </div>
-            <div class="box-column backlog-tasks-column">
+    <header>
 
-            </div>
-        </div>
-
-        <div>
-            <div class="box-header">
-                <h5>In Progress<span class="num"> 0 </span></h5>
-                
-            </div>
-            <div class="box-column in-progress-tasks-column">
-            
-            </div>
-        </div>
-
-        <div>
-            <div class="box-header">
-                <h5>Complete<span class="num"> 0 </span></h5>
-                    
-            </div>
-            <div class="complete-tasks-column box-column">
-
-            </div>
-        </div>
-    </div>
-
-    <form>
+        <nav>
+            <li><a href="index.html">Month Overview</a></li>
+            <li><a>Weekly view</a></li>
+            <li><a>Daily routine</a></li>
+        </nav>
+        <h2 class="title">Super Tasker</h2>
         
-        <label for="taskName" >Task Name: </label>
-        <input type="text" name="taskName" id="taskName" placeholder="Enter Task Name">
-        <label for="taskType">Task Type: </label>
-        <select placeholder="Task Type" id="taskType" >
-            <option>--Task Type--</option>
-            <option value="College">College</option>
-            <option value="Economics">Economics</option>
-            <option value="Engineering">Engineering</option>
-            <option value="Personal">Personal</option>
-            <option value="Work">Work</option>
-        </select>
+    </header>
 
-        <button type="submit" id="confirmAddTask">Add Task</button>
-    </form>
+
+    <main>
+
+        <span class="right add-new-task">Add Task<i id="new-task-button" class="fa-solid fa-plus"></i></span>
+
+        <div class="container">
+            
+            <div class="column">
+                <div class="box-header">
+                    <h5>BackLog<span class="num numBacklog right">0</span></h5>
+                    
+                </div>
+                <div class="box-column backlog-tasks-column">
+
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="box-header">
+                    <h5>In Progress<span class="num numInProgress right">0</span></h5>
+                    
+                </div>
+                <div class="box-column in-progress-tasks-column">
+                
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="box-header">
+                    <h5>Complete<span class="num numComplete right">0</span></h5>
+                        
+                </div>
+                <div class="complete-tasks-column box-column">
+
+                </div>
+            </div>
+        </div>
+
+        <span class="right"><button class="clearAll" id="clearAll">Clear all</button></span>
+
+        <dialog class="modal">
+            <form id="newTaskForm" method="dialog">
+                
+                <label for="taskName" >Task Name: </label>
+                <input type="text" name="taskName" id="taskName" placeholder="Enter Task Name" autocomplete="off">
+                <label for="taskType">Task Type: </label>
+                <select id="taskType" >
+                    Task Type
+                    <option value="College">College</option>
+                    <option value="Economics">Economics</option>
+                    <option value="Engineering">Engineering</option>
+                    <option value="Personal">Personal</option>
+                    <option value="Work">Work</option>
+                </select>
+
+                <label for="taskDate">Due Date: </label>
+                <input type="datetime-local" id="taskDate" > 
+
+                <button id="cancel-new-task">Cancel</button>
+
+                <button id="confirmAddTask">Add Task</button>
+            </form>
+        </dialog>
+    </main>
 
     <script src="JS/tasks.js"></script>
+
 </body>
 </html>

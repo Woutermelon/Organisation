@@ -1,21 +1,57 @@
-let taskTypeInput = document.getElementById("taskType");
-let taskNameInput = document.getElementById("taskName");
-let taskList = JSON.parse(localStorage.getItem("saved-tasks"));
+//initialise and retrieve variables
+const taskTypeInput = document.getElementById("taskType");
+const taskNameInput = document.getElementById("taskName");
+const taskDateInput = document.getElementById('taskDate')
+const taskList = localStorage.getItem('saved-tasks') ? JSON.parse(localStorage.getItem('saved-tasks')) : [];
+const newTaskButton = document.getElementById('confirmAddTask');
+const clearAll = document.getElementById('clearAll');
+const modal = document.querySelector('.modal');
+const openModal = document.getElementById('new-task-button');
+const closeModal = document.getElementById('cancel-new-task');
 
-function addTask(ev) {
-    ev.preventDefault();
-    newTaskName = taskNameInput.value.trim();
-    newTaskType = taskTypeInput.value;
+
+
+openModal.addEventListener('click', () => {
+    modal.showModal();
+})
+
+closeModal.addEventListener('click', () => {
+    modal.close();
+})
+
+
+
+newTaskButton.addEventListener("click", e => {
+    let newTaskName = taskNameInput.value.trim();
+    let newTaskType = taskTypeInput.value;
+    let newTaskDueDate = taskDateInput.value;
     let newTask = {
         taskName: newTaskName,
         taskType: newTaskType,
-        taskStatus: "Backlog"
-    }
+        taskStatus: "Backlog",
+        taskDueDate: newTaskDueDate
+    };
+    console.log(newTask);
     taskList.push(newTask);
     localStorage.setItem("saved-tasks", JSON.stringify(taskList));
     showTasks();
+    document.querySelector('#newTaskForm').reset()
+});
+
+clearAll.addEventListener('click', () => {
+    taskList.splice(0, taskList.length);
+    localStorage.setItem('saved-tasks', JSON.stringify(taskList));
+    showTasks();
+});
+
+
+function deleteTask(deleteId) {
+    taskList.splice(deleteId, 1);
+    localStorage.setItem('saved-tasks', JSON.stringify(taskList));
+    showTasks();
 };
 
+//hardcoded tasks to test showTask function
 let testTasks = [{
     taskName: "quiz",
     taskType: "Economics",
@@ -24,31 +60,35 @@ let testTasks = [{
     taskName: "assignment",
     taskType: "Engineering",
     taskStatus: "In Progress"
+}, {
+    taskName: "task",
+    taskType: "Personal",
+    taskStatus: "Backlog"
 }];
-testTasks.forEach((testTask) =>{
+testTasks.forEach((testTask) => {
     taskList.push(testTask);
 });
 
 
-document.getElementById("confirmAddTask").addEventListener('click', addTask);
-
-let completeTasksHTML = '';
-
-let backlogHTML = '';
-
-let inProgressHTML = '';
-
+//showTask function
 function showTasks() {
+    let completeTasksHTML = '';
+    let backlogHTML = '';
+    let inProgressHTML = '';
+    numComplete = 0;
+    numInProgress = 0;
+    numBacklog = 0;
     if (taskList) {
         taskList.forEach((task, id) => {
-            if (task.taskStatus === "Complete") 
+            if (task.taskStatus === "Complete") {
+                numComplete += 1;
                 completeTasksHTML += `
                     <div class="box">
                         <div class="top-box">    
                             <span class="tag" id="${task.taskType}">${task.taskType}</span>
-                            <p>${task.taskName}</p>
-                            <button onclick="statusComplete(this)" class="taskDeleteBtn" id="${id}">Delete</button>
+                            <i class="fa-solid fa-xmark" onclick="deleteTask(${id})"></i>
                         </div>
+                        <p>${task.taskName}</p>
                         <div class="box-footer">
                             <div class="date">
                                 <li><i class="fa-solid fa-calendar-days"></i></li>
@@ -57,17 +97,17 @@ function showTasks() {
                             
                             <li class="comments"><i class="fa-solid fa-message"></i></li>
                         </div>
-                        <button id="${id}" class="completeTask">Complete</button>
                     </div>
                 `;
-            else if (task.taskStatus === "In Progress")
+            } else if (task.taskStatus === "In Progress") {
+                numInProgress += 1;
                 inProgressHTML += `
                     <div class="box">
                         <div class="top-box">    
                             <span class="tag" id="${task.taskType}">${task.taskType}</span>
-                            <p>${task.taskName}</p>
-                            <button id="deleteTaskBtn">Delete</button>
+                            <i class="fa-solid fa-xmark" onclick="deleteTask(${id})"></i>
                         </div>
+                        <p>${task.taskName}</p>
                         <div class="box-footer">
                             <div class="date">
                                 <li><i class="fa-solid fa-calendar-days"></i></li>
@@ -76,17 +116,18 @@ function showTasks() {
                             
                             <li class="comments"><i class="fa-solid fa-message"></i></li>
                         </div>
-                        <button id="taskCompleteBtn" data-task-name="${task.taskName}">Complete</button>
+                        <button id="taskCompleteBtn" onclick="completeTask(${id})">Complete</button>
                     </div>
                 `;
-            else
+            } else {
+                numBacklog += 1;
                 backlogHTML += `
                     <div class="box">
                         <div class="top-box">    
                             <span class="tag" id="${task.taskType}">${task.taskType}</span>
-                            <p>${task.taskName}</p>
-                            <button id="deleteTaskBtn">Delete</button>
+                            <i class="fa-solid fa-xmark" onclick="deleteTask(${id})"></i>
                         </div>
+                        <p>${task.taskName}</p>
                         <div class="box-footer">
                             <div class="date">
                                 <li><i class="fa-solid fa-calendar-days"></i></li>
@@ -95,24 +136,36 @@ function showTasks() {
                             
                             <li class="comments"><i class="fa-solid fa-message"></i></li>
                         </div>
-                        <button id="taskCompleteBtn" data-task-name="${task.taskName}">Complete</button>
+                        <button class="beginTaskBtn" onclick="beginTask(${id})">Begin</button>
                     </div>
                 `;
+            }
         });
     }
+
+    document.querySelector('.complete-tasks-column').innerHTML = completeTasksHTML;
+    document.querySelector('.backlog-tasks-column').innerHTML = backlogHTML;
+    document.querySelector('.in-progress-tasks-column').innerHTML = inProgressHTML;
+
+    document.querySelector('.numBacklog').textContent = JSON.stringify(numBacklog);
+    document.querySelector('.numInProgress').textContent = JSON.stringify(numInProgress);
+    document.querySelector('.numComplete').textContent = JSON.stringify(numComplete);
+
 }
 showTasks();
 
-document.querySelector('.complete-tasks-column').innerHTML = completeTasksHTML;
+console.log(taskList);
 
-document.querySelector('.backlog-tasks-column').innerHTML = backlogHTML;
-
-document.querySelector('.in-progress-tasks-column').innerHTML = inProgressHTML;
-
-const statusComplete = (selectedTask) => {
-    taskList[selectedTask.id].taskStatus = "Complete";
+//begin task (set status to in progress)
+function completeTask (taskId) {
+    taskList[taskId].taskStatus = "Complete";
     showTasks();
-    localStorage.setItem("saved-tasks", JSON.stringify(taskList));
 };
 
-console.log(taskList);
+function beginTask (taskId) {
+    taskList[taskId].taskStatus = "In Progress";
+    showTasks();
+};
+
+
+
